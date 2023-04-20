@@ -6,7 +6,7 @@
 
 __author__ = 'Guanjie Wang'
 __email__ = "gjwang@buaa.edu.cn"
-__version__ = 1.0
+__version__ = 0.1
 __init_date__ = '2022/10/10 10:52:42'
 __maintainer__ = 'Guanjie Wang'
 __update_date__ = '2022/10/10 10:52:42'
