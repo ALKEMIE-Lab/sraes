@@ -26,19 +26,42 @@ class PmEmmlData(Dataset):
     
     def __init__(self, filename: str, output_index=0, output_name=None, output_all=False):
         if filename.endswith('.csv'):
-            self.data = pd.read_csv(filename).values
+            self.meta_data = pd.read_csv(filename)
         elif filename.endswith('.xlsx'):
-            self.data = pd.read_excel(filename, sheet_name=SHEET_NAME, header=0).values
+            self.meta_data = pd.read_excel(filename, sheet_name=SHEET_NAME, header=0)
+
+        self.data = self.meta_data.values
         self.train_data = self.data[:, :-5]
+        self.output_all = output_all
+        self.output_name = output_name
+        self.output_index = output_index
         
-        if output_all:
+        if self.output_all:
             self.label = self.data[:, -5:]
         else:
-            if output_name:
-                self.label = self.data[:, self.output_index[output_name]]
+            if self.output_name:
+                self.label = self.data[:, self.output_index[self.output_name]]
             else:
-                self.label = self.data[:, output_index]
-        
+                self.label = self.data[:, self.output_index]
+    
+    @property
+    def feature_names(self):
+        return self.meta_data.columns.values[:-5]
+    
+    @property
+    def feature_num_names(self):
+        return {column_name: index for index, column_name in enumerate(self.meta_data.columns[:-5])}
+    
+    @property
+    def label_names(self):
+        if self.output_all:
+            return self.meta_data.columns.values[-5:]
+        else:
+            if self.output_name:
+                return self.output_name
+            else:
+                return self.meta_data.columns.values[self.output_index]
+    
     def __getitem__(self, item):
         # train_val, label = self.data[item], self.targets[item]
         return self.train_data[item, :], self.label[item]
