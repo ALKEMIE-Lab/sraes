@@ -15,6 +15,7 @@ import pandas as pd
 import torch.utils.data as Data
 from emml.constant import SHEET_NAME
 
+
 class PmEmmlData(Dataset):
     
     output_index = {"∆GO*": -5,
