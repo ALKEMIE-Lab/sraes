@@ -19,7 +19,12 @@ DESCRIPTION = 'ee by Machine Learning'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
 LONG_DESCRIPTION = open(README_FILE, encoding='UTF8').read()
 
-REQUIREMENTS = ['numpy', 'pandas', 'xlrd==1.2.0', 'openpyxl', 'seaborn', 'pyyaml']
+RANDOM_FOREST_REQUIRES = ['scikit-learn==1.2.2']
+PYTORCH_REQUIRES= ['torch', 'torchvision', 'torchaudio']
+BASE_REQUIRES = ['numpy', 'pandas', 'xlrd==1.2.0', 'openpyxl', 'seaborn', 'pyyaml']
+PRIVATE_REQUIRES = ['matfleet>=0.0.5']
+REQUIREMENTS = BASE_REQUIRES + RANDOM_FOREST_REQUIRES + PYTORCH_REQUIRES + PRIVATE_REQUIRES
+
 URL = "https://gitee.com/alkemie_gjwang/emml"
 AUTHOR = __author__
 AUTHOR_EMAIL = __email__
