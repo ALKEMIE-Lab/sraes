@@ -16,12 +16,13 @@ __date__ = '2021/06/10 16:39:37'
 # from ztml.rdata.clean_csv_data import get_clean_data, read_data
 # from ztml.rdata.rename_cloumn import get_rename_column_data
 # from copy import deepcopy
-from emml.data.tools import get_random_from_each_groupby_index, get_random_groupby_index
+from emml.data.tools import get_random_from_each_groupby_index
 from emml.data.tools import auto_get_corelated_group
 import numpy as np
 import pandas as pd
 
 SHEET_NAME = 'Original'
+
 
 def read_data(filename, is_csv=False):
     if is_csv:
@@ -46,7 +47,7 @@ def get_normalize_data(data, gogal_column=None):
     else:
         column = data.columns.values.tolist()[1:-5]
         train_data = np.array(data.values[:, 1:-5], dtype=float)
-        a = np.corrcoef(train_data, rowvar=0)
+        a = np.corrcoef(train_data, rowvar=False)
         b = np.abs(np.triu(a))
         gp = auto_get_corelated_group(data=b, coref_val=0.909, is_triu=True, get_remove=True)
         print('corelated column:', len(gp[1]))
@@ -68,7 +69,6 @@ def get_normalize_data(data, gogal_column=None):
     return pd.DataFrame(np.hstack((ffe, label)), columns=gogal_column), gogal_column[:-5]
 
 
-
 def reconvrt_vele2num(data, write_trans_value_data2file=False, rm_max_min_equal_0=False):
     print(data.shape)
     gogal_cl = ['VA', 'VB', 'VC', 'VD', 'VTM']
@@ -77,6 +77,7 @@ def reconvrt_vele2num(data, write_trans_value_data2file=False, rm_max_min_equal_
     uni_npdata = np.unique(npdata)
     if write_trans_value_data2file:
         f_data = np.array([uni_npdata.tolist(), range(uni_npdata.shape[0])])
+        print(f_data)
         # pddata = pd.DataFrame(f_data.transpose(), columns=['values', 'num'])
         # pddata.to_excel('value_data2num.xlsx')
     
@@ -125,12 +126,12 @@ def random_data():
     normalized_data = read_data(tmp_file)
     normalized_data['Index'] = [5] * 81 + [6] * 39 + [7] * 8
     use2train_data, use2valid_data = get_random_from_each_groupby_index(normalized_data, column_index=['Index'],
-                                                              ratio=0.8, to_data=True, train_index=None)
+                                                                        ratio=0.8, to_data=True, train_index=None)
     print(use2train_data.shape, use2valid_data.shape)
     
     use2train_data = use2train_data.reset_index(drop=True)
     train_train_data, train_test_data = get_random_from_each_groupby_index(use2train_data, column_index=['Index'],
-                                                                 ratio=0.8, to_data=True)
+                                                                           ratio=0.8, to_data=True)
     print(train_train_data.shape, train_test_data.shape)
     # use2valid_data = use2valid_data.reset_index(drop=True)
     # valid_10data, valid_30data = get_random_from_each_groupby_index(use2valid_data, column_index=['Index'],
@@ -139,9 +140,12 @@ def random_data():
 
     print("Final features: %d" % (train_train_data.shape[1] - 6))
     
-    __rm_point_columns(train_train_data).to_excel('5.train_%d_train.xlsx'%train_train_data.shape[0], sheet_name=SHEET_NAME, index=False)
-    __rm_point_columns(train_test_data).to_excel('5.train_%d_test.xlsx'%train_test_data.shape[0], sheet_name=SHEET_NAME, index=False)
-    __rm_point_columns(use2valid_data).to_excel('5.%d_for_check.xlsx'%use2valid_data.shape[0], sheet_name=SHEET_NAME, index=False)
+    __rm_point_columns(train_train_data).to_excel('5.train_%d_train.xlsx' % train_train_data.shape[0],
+                                                  sheet_name=SHEET_NAME, index=False)
+    __rm_point_columns(train_test_data).to_excel('5.train_%d_test.xlsx' % train_test_data.shape[0],
+                                                 sheet_name=SHEET_NAME, index=False)
+    __rm_point_columns(use2valid_data).to_excel('5.%d_for_check.xlsx' % use2valid_data.shape[0],
+                                                sheet_name=SHEET_NAME, index=False)
     # __rm_point_columns(valid_30data).to_excel('4.28_for_predict.xlsx', sheet_name=SHEET_NAME, index=False)
 
 
@@ -155,13 +159,12 @@ def __rm_point_columns(data, index=None):
     return data[ll]
 
 
-
 if __name__ == '__main__':
     # now_head_dir = "2_rmcoref_data"  # 包含nop数值和 zt数值
     # now_head_dir = "all_data"      # nop 被转换为01，且没有根据相关系数实施特征工程
     
     # now_head_dir = "all_rmcoref_data"  # nop 被转换为01， 根据相关系数删除相关系数大于0.9的项
-    # file_name = r'simple_dataset.csv'
+    # file_name = r"simple_dataset.csv"
     # now_is_nop_to_01 = True
     # run_compounds_split(file_name, head_dir=now_head_dir, is_nop_to_01=now_is_nop_to_01)
     
