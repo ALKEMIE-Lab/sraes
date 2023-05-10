@@ -21,16 +21,13 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from emml.train.read_data import load_pmdata, PmEmmlData
 
 
-def get_data(col_index=-1):
+def get_data(col_index, train_csv_fn, valid_csv_fn):
     """
     获取数据
     :param col_index:
     :return:
     """
     x_train, y_train = [], []
-    train_csv_fn = '../data/5.train_82_train.xlsx'
-    # test_csv_fn = '../data/5.train_20_test.xlsx'
-    valid_csv_fn = '../data/5.26_for_check.xlsx'
     output_all = False
     pmdata = PmEmmlData(train_csv_fn, output_all=output_all, output_index=col_index)
     
@@ -161,14 +158,23 @@ def plt_rf(rf, pmdata, index_name='run_random',
 
 
 if __name__ == '__main__':
+    # train_fn = '../data/only_ele_data/5.train_82_train.xlsx'
+    # # test_fn = '../data/only_ele_data/5.train_20_test.xlsx'
+    # valid_fn = '../data/only_ele_data/5.26_for_check.xlsx'
+
+    train_fn = '../data/all_feature_data/5.train_96_train.xlsx'
+    valid_fn = '../data/all_feature_data/5.24_for_check.xlsx'
+
     fn_index = {-5: '∆GO', -4: '∆GOH', -3: '∆GOOH', -2: 'ηORR', -1: 'ηOER'}
     for k, v in fn_index.items():
         print(k, v)
         col_index = k
-        pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index)
+        pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index,
+                                                      train_csv_fn=train_fn,
+                                                      valid_csv_fn=valid_fn)
         rfs = random_froest(xtrain, ytrain, xtest, ytest, log_name=f"{fn_index[col_index]}_random_forest_log.txt")
         plt_rf(rfs, pmda, index_name=fn_index[col_index],
                is_plt_forest_model=True,
                is_plt_feature_importance=True,
                is_plt_all_forest_model=False)
-        break
+        # break

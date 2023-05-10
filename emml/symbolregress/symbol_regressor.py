@@ -24,13 +24,13 @@ def symregress_m1(xdata, ydata):
     print(xdata.shape, ydata.shape)
     ydata = ydata.ravel()
     # function_set=['add', 'sub', 'mul', 'div', 'sqrt', 'log', 'abs', 'neg', 'max', 'min', 'sin', 'cos', 'tan', 'inv']
-    function_set = ['add', 'sub', 'mul', 'div', 'sqrt', 'abs', 'neg', 'max', 'min']
+    function_set = ['add', 'sub', 'mul', 'div', 'sqrt', 'abs']
     
-    est_gp = SymbolicRegressor(population_size=5000,
+    est_gp = SymbolicRegressor(population_size=10000,
                                generations=20,
                                function_set=function_set,
                                # init_depth=(12, 12),
-                               init_method='half and half',
+                               # init_method='half and half',
                                metric='mse',
                                parsimony_coefficient=0.01,
                                stopping_criteria=0.01,
@@ -40,7 +40,7 @@ def symregress_m1(xdata, ydata):
                                p_point_mutation=0.1,
                                max_samples=0.9,
                                verbose=1,
-                               random_state=0)
+                               random_state=5)
     est_gp.fit(xdata, ydata)
     print(est_gp._program)
     return est_gp
@@ -63,13 +63,13 @@ def tt(est_gp, xdata, ydata, xtest, ytest):
     print(score_gp, score_tree, score_rf)
     final_dd = [y_gp, y_tree, y_rf]
     name = ['SymbolicRegressor', 'DecisionTreeRegressor', 'RandomForestRegressor']
-
+    
     fig, axs = plt.subplots(1, 3, figsize=(10, 3))
     for i in range(3):
         axs[i].plot(ytest, final_dd[i], 'o', label=name[i])
         axs[i].set_xlim(0, 3)
         axs[i].set_ylim(0, 3)
-    plt.savefig('test_3model.png')
+    plt.savefig('2test_all_fea_model.png')
     
     # fig = plt.figure(figsize=(12, 10))
     #
@@ -96,18 +96,32 @@ if __name__ == '__main__':
            'φn4-TM-n5': 26, 'hTM-n': 27}
     
     fn_index = {-5: '∆GO', -4: '∆GOH', -3: '∆GOOH', -2: 'ηORR', -1: 'ηOER'}
-    feature_index_list = {-1: ['Ne', 'χTM', 'φn4-TM-n5', 'rcovTM', 'dn3-TM', 'ITM', 'φn1-TM-n2', 'VTM', 'dn1-TM',
-                               'a', 'c', 'dn2-TM'],
-                          -2: ['Ne', 'rcovTM', 'χTM', 'ITM', 'φn1-TM-n2', 'VTM', 'c', 'hTM-n', 'dn3-TM',
-                               'a', 'dn2-TM', 'β']}
+    # feature_index_list = {-1: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VTM', 'rcovTM', 'χTM', 'ITM', 'Ne'],
+    #                       -2: ['Ne', 'rcovTM', 'χTM', 'ITM', 'φn1-TM-n2', 'VTM', 'c', 'hTM-n', 'dn3-TM',
+    #                            'a', 'dn2-TM', 'β']}
+    #
+    feature_index_list = {-1: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RTM', 'ZA',
+                               'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+                               'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe'],
+                          -2: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RD', 'RTM', 'ZA',
+                               'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+                               'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe']}
+    # print(feature_index_list[-1][10])
+    # print(feature_index_list[-1][32])
+    # exit()
+    # train_fn = '../data/only_ele_data/5.train_82_train.xlsx'
+    # valid_fn = '../data/only_ele_data/5.26_for_check.xlsx'
+    train_fn = '../data/all_feature_data/5.train_96_train.xlsx'
+    valid_fn = '../data/all_feature_data/5.train_96_train.xlsx'
+    # valid_fn = '../data/all_feature_data/5.24_for_check.xlsx'
     
     # for k, v in fn_index.items():
     #     print(k, v)
     #     col_index = k
-    col_index = -1
-    pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index)
+    col_index = -2
+    pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index, train_csv_fn=train_fn, valid_csv_fn=valid_fn)
     print(ytest.shape)
-
+    
     findex = [pmda.feature_num_names[i] for i in feature_index_list[col_index]]
     xdd = xtrain[:, findex]
     xtt = xtest[:, findex]
