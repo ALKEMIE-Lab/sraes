@@ -89,6 +89,15 @@ def tt(est_gp, xdata, ydata, xtest, ytest):
     # plt.show()
 
 
+def sparse_str(s, feature_index_list, col_index):
+    import re
+    result = re.findall(r'X\d+', s)
+    sym = [feature_index_list[col_index][int(i.replace('X', ''))] for i in result]
+    for i in range(len(result)):
+        s = s.replace(result[i], sym[i])
+    print(s)
+
+
 if __name__ == '__main__':
     lll = {'NA': 0, 'NB': 1, 'NC': 2, 'ND': 3, 'NT': 4, 'VA': 5, 'VB': 6, 'VTM': 7, 'rcovTM': 8, 'χTM': 9,
            'ITM': 10, 'Ne': 11, 'a': 12, 'c': 13, 'α': 14, 'β': 15, 'LS': 16, 'Ecn': 17, 'Num': 18,
@@ -100,12 +109,25 @@ if __name__ == '__main__':
     #                       -2: ['Ne', 'rcovTM', 'χTM', 'ITM', 'φn1-TM-n2', 'VTM', 'c', 'hTM-n', 'dn3-TM',
     #                            'a', 'dn2-TM', 'β']}
     #
-    feature_index_list = {-1: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RTM', 'ZA',
-                               'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
-                               'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe'],
-                          -2: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RD', 'RTM', 'ZA',
-                               'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
-                               'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe']}
+    # feature_index_list = {-1: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RTM', 'ZA',
+    #                            'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+    #                            'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe'],
+    #                       -2: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'RA', 'RD', 'RTM', 'ZA',
+    #                            'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+    #                            'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe']}
+    col_index = -1
+    feature_index_list = {
+        # -1: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'ZA',
+        #      'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+        #      'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe'],
+        -1: ['NA', 'NB', 'VA', 'VB', 'ZA', 'ZB', 'WA', 'WB', 'rcovA', 'rcovB', 'χA', 'χB', 'Ne',
+             'NVe', 'VTM', 'ZTM', 'WTM', 'rcovTM', 'χTM', 'ITM'],
+        -2: ['NA', 'NB', 'NC', 'ND', 'NT', 'VA', 'VB', 'VC', 'VD', 'VTM', 'ZA',
+             'ZB', 'ZC', 'ZD', 'ZTM', 'WA', 'WB', 'WC', 'WD', 'WTM', 'rcovA', 'rcovB', 'rcovC',
+             'rcovD', 'rcovTM', 'χA', 'χB', 'χC', 'χD', 'χTM', 'ITM', 'Ne', 'NVe']
+    }
+    s = "div(add(X8, div(-0.034, X11)), div(sqrt(X16), sqrt(X17)))"
+    sparse_str(s, feature_index_list, col_index)
     # print(feature_index_list[-1][10])
     # print(feature_index_list[-1][32])
     # exit()
@@ -118,7 +140,6 @@ if __name__ == '__main__':
     # for k, v in fn_index.items():
     #     print(k, v)
     #     col_index = k
-    col_index = -2
     pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index, train_csv_fn=train_fn, valid_csv_fn=valid_fn)
     print(ytest.shape)
     
@@ -127,3 +148,4 @@ if __name__ == '__main__':
     xtt = xtest[:, findex]
     model = symregress_m1(xdd, ytrain)
     tt(model, xdd, ytrain, xtt, ytest)
+    

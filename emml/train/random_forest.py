@@ -11,6 +11,8 @@ __init_date__ = '2023/04/23 08:42:41'
 __maintainer__ = 'Guanjie Wang'
 __update_date__ = '2023/04/23 08:42:41'
 
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 # import graphviz
@@ -19,6 +21,7 @@ from sklearn import tree
 from sklearn.tree import plot_tree
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from emml.train.read_data import load_pmdata, PmEmmlData
+from emml.utilities import accord_now_time_create_dir
 
 
 def get_data(col_index, train_csv_fn, valid_csv_fn):
@@ -84,17 +87,19 @@ def random_froest(x_train, y_train, x_test, y_test, log_name='random_forest.log'
 
 
 def plt_rf(rf, pmdata, index_name='run_random',
+           head_dir='.',
            is_plt_forest_model=False,
            is_plt_feature_importance=False,
            is_plt_all_forest_model=False):
     """
     绘制随机森林模型重要特征，和模型可视化
-    :param rf:
-    :param pmdata:
-    :param index_name:
-    :param is_plt_forest_model:
-    :param is_plt_feature_importance:
-    :param is_plt_all_forest_model:
+    :param rf: 随机森林模型
+    :param pmdata: 数据集
+    :param index_name: 保存文件的名称
+    :param head_dir: 保存文件的根目录
+    :param is_plt_forest_model: 是否绘制随机森林模型
+    :param is_plt_feature_importance: 是否绘制特征重要性
+    :param is_plt_all_forest_model: 是否绘制所有的随机森林模型
     :return:
     """
     feature_importances = rf.feature_importances_
@@ -117,7 +122,7 @@ def plt_rf(rf, pmdata, index_name='run_random',
         plt.barh(range(len(indices)), feature_importances[indices], color='b', align='center')
         plt.yticks(range(len(indices)), [feature_names[i] for i in indices])
         plt.xlabel('Relative Importance')
-        plt.savefig(f"{index_name}_feature_importance.pdf")
+        plt.savefig(os.path.join(head_dir, f"{index_name}_feature_importance.pdf"))
     
     if is_plt_forest_model:
         # # 可视化模型
@@ -135,7 +140,8 @@ def plt_rf(rf, pmdata, index_name='run_random',
             plt.figure(figsize=(20, 10))
             plot_tree(tree_to_visualize, feature_names=feature_names, class_names=label_names, filled=True,
                       rounded=True)
-            plt.savefig(f"{index_name}_model_random_forest_%d.pdf" % model_index[index])
+            plt.savefig(os.path.join(head_dir,
+                                     f"{index_name}_model_random_forest_%d.pdf" % model_index[index]))
     
     if is_plt_all_forest_model:
         n_trees = len(rf.estimators_)
@@ -153,7 +159,7 @@ def plt_rf(rf, pmdata, index_name='run_random',
             axes[-1, -1].axis('off')
         
         # plt.show()
-        plt.savefig(f"{index_name}_model_random_forest_all.pdf")
+        plt.savefig(os.path.join(head_dir, f"{index_name}_model_random_forest_all.pdf"))
     return rf, feature_importances
 
 
@@ -164,7 +170,9 @@ if __name__ == '__main__':
 
     train_fn = '../data/all_feature_data/5.train_96_train.xlsx'
     valid_fn = '../data/all_feature_data/5.24_for_check.xlsx'
-
+    dir_name = accord_now_time_create_dir('.', prefix_str='rf_feature', suffix_str='1',
+                                          to_hour=True)
+    
     fn_index = {-5: '∆GO', -4: '∆GOH', -3: '∆GOOH', -2: 'ηORR', -1: 'ηOER'}
     for k, v in fn_index.items():
         print(k, v)
@@ -172,8 +180,9 @@ if __name__ == '__main__':
         pmda, xtrain, ytrain, xtest, ytest = get_data(col_index=col_index,
                                                       train_csv_fn=train_fn,
                                                       valid_csv_fn=valid_fn)
-        rfs = random_froest(xtrain, ytrain, xtest, ytest, log_name=f"{fn_index[col_index]}_random_forest_log.txt")
-        plt_rf(rfs, pmda, index_name=fn_index[col_index],
+        rfs = random_froest(xtrain, ytrain, xtest, ytest,
+                            log_name=os.path.join(dir_name, f"{fn_index[col_index]}_random_forest_log.txt"))
+        plt_rf(rfs, pmda, index_name=fn_index[col_index], head_dir=dir_name,
                is_plt_forest_model=True,
                is_plt_feature_importance=True,
                is_plt_all_forest_model=False)
