@@ -13,7 +13,7 @@ __date__ = '2021/05/24 15:54:00'
 from torch.utils.data.dataset import Dataset
 import pandas as pd
 import torch.utils.data as Data
-from emml.constant import SHEET_NAME
+from sraes.constant import SHEET_NAME
 
 
 class PmEmmlData(Dataset):

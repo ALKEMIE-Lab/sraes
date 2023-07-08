@@ -10,10 +10,12 @@ __version__ = 0.1
 __init_date__ = '2022/10/10 10:52:42'
 __maintainer__ = 'Guanjie Wang'
 __update_date__ = '2022/10/10 10:52:42'
+
 import os
 from setuptools import find_packages, setup
 
-NAME = 'emml'
+
+NAME = 'sraes'
 VERSION = '0.0.1'
 DESCRIPTION = 'ee by Machine Learning'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')

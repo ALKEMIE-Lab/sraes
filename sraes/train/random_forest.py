@@ -20,8 +20,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn import tree
 from sklearn.tree import plot_tree
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from emml.train.read_data import load_pmdata, PmEmmlData
-from emml.utilities import accord_now_time_create_dir
+from sraes.train.read_data import load_pmdata, PmEmmlData
+from sraes.utilities import accord_now_time_create_dir
 
 
 def get_data(col_index, train_csv_fn, valid_csv_fn):
@@ -30,16 +30,16 @@ def get_data(col_index, train_csv_fn, valid_csv_fn):
     :param col_index:
     :return:
     """
-    x_train, y_train = [], []
+    x_train, y_train, x_test, y_test = [], [], [], []
     output_all = False
     pmdata = PmEmmlData(train_csv_fn, output_all=output_all, output_index=col_index)
     
     train_pmdata_loader = load_pmdata(filename=train_csv_fn, shuffle=True, output_all=output_all,
-                                      output_index=col_index, batch_size=82)
+                                      output_index=col_index, batch_size=120)
     # test_pmdata_loader = load_pmdata(filename=test_csv_fn, shuffle=True, output_all=output_all,
     #                                  output_index=col_index, batch_size=20)
     valid_pmdata_loader = load_pmdata(filename=valid_csv_fn, shuffle=True, output_all=output_all,
-                                      output_index=col_index, batch_size=26)
+                                      output_index=col_index, batch_size=120)
     for step, (b_x, b_y) in enumerate(train_pmdata_loader):
         x_train = b_x.float()
         y_train = b_y.reshape(-1, 1).float()

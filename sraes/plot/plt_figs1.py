@@ -14,7 +14,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from emml.data.tools import method2, read_data
+from sraes.data.tools import method2, read_data
 import os
 
 def get_correc_column_data():

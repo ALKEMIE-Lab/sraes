@@ -12,8 +12,7 @@ __date__ = '2021/06/10 16:29:05'
 
 import numpy as np
 import pandas as pd
-from emml.constant import SHEET_NAME
-
+from sraes.constant import SHEET_NAME
 
 def read_data(filename, is_csv=False):
     if is_csv:
@@ -49,7 +48,7 @@ def get_train_test_index(data, column_index, ratio, to_data=False):
     :param data
     :param column_index: 列表，列名构成的列表
     :param ratio: 测试集比例
-    :param to_data: 决定返回数据还是索引
+    :param retrun_data: 决定返回数据还是索引
     :return: 训练集和测试集的索引 或者 训练集和测试集数据
     """
     dd = data.groupby(column_index)
@@ -76,9 +75,7 @@ def get_random_groupby_index(data, column_index, ratio, to_data=False,
     :param data
     :param column_index: 列表，列名构成的列表
     :param ratio: 测试集比例
-    :param to_data: 决定返回数据还是索引
-    :param test_index: 测试集索引
-    :param train_index: 训练集索引
+    :param retrun_data: 决定返回数据还是索引
     :return: 训练集和测试集的索引 或者 训练集和测试集数据
     """
     dd = data.groupby(column_index)
@@ -129,15 +126,13 @@ def get_random_groupby_index(data, column_index, ratio, to_data=False,
 
 
 def get_random_from_each_groupby_index(data, column_index, ratio, to_data=False,
-                                       test_index=None, train_index=None):
+                             test_index=None, train_index=None):
     """
     读取csv数据，根据指定列先分组，并在将每一组都分成训练集和测试集，返回测试集的索引
     :param data
     :param column_index: 列表，列名构成的列表
     :param ratio: 测试集比例
-    :param to_data: 决定返回数据还是索引
-    :param test_index: 测试集索引
-    :param train_index: 训练集索引
+    :param retrun_data: 决定返回数据还是索引
     :return: 训练集和测试集的索引 或者 训练集和测试集数据
     """
     dd = data.groupby(column_index)

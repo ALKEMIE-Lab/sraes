@@ -1,19 +1,26 @@
-# eeml
+# 1. Symbol regression accelerated electrocatalyst screening (SRAES)
 
-#### Introduction
-EE by Machine Learning.
-
-
-#### Install
-
-pip install eeml
+### 1.1. Introduction
+Symbol regression accelerated electrocatalyst screening (SRAES) by Machine Learning.
 
 
-#### README
+### 1.2. Install
+#### usage
+```
+pip install sraes
+```
+
+#### develop
+```
+git clone 
+cd sraes
+pip install -e .
+```
+### 1.3. README
 
 Comming soon ...
 
-#### Developers
-[Guanjie Wang](https://alkemine.cn/gjwang), gjwang@buaa.edu.cn
+### 1.4. Developers
+[Guanjie Wang](https://alkemine.cn/gjwang), gjwang@buaa.edu.cn;
 
-Erpeng Wang
+Erpeng Wang;
