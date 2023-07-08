@@ -1,7 +1,8 @@
 # 1. Symbol regression accelerated electrocatalyst screening (SRAES)
 
 ### 1.1. Introduction
-Symbol regression accelerated electrocatalyst screening (SRAES) by Machine Learning.
+Symbol regression accelerated electrocatalyst screening (SRAES) by  
+Machine Learning.
 
 
 ### 1.2. Install
@@ -21,6 +22,6 @@ pip install -e .
 Comming soon ...
 
 ### 1.4. Developers
-[Guanjie Wang](https://alkemine.cn/gjwang), gjwang@buaa.edu.cn;
+[Guanjie Wang](https://github.com/AlphaGJW), gjwang.buaa@gmail.com;
 
 Erpeng Wang;

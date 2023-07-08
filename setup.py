@@ -27,7 +27,7 @@ BASE_REQUIRES = ['numpy', 'pandas', 'xlrd==1.2.0', 'openpyxl', 'seaborn', 'pyyam
 PRIVATE_REQUIRES = ['matfleet>=0.0.5']
 REQUIREMENTS = BASE_REQUIRES + RANDOM_FOREST_REQUIRES + PYTORCH_REQUIRES + PRIVATE_REQUIRES
 
-URL = "https://gitee.com/alkemie_gjwang/emml"
+URL = "https://github.com/AlphaGJW"
 AUTHOR = __author__
 AUTHOR_EMAIL = __email__
 LICENSE = 'MIT'
