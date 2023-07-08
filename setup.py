@@ -17,7 +17,7 @@ from setuptools import find_packages, setup
 
 NAME = 'sraes'
 VERSION = '0.0.1'
-DESCRIPTION = 'ee by Machine Learning'
+DESCRIPTION = 'Symbol regression accelerated electrocatalyst screening'
 README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
 LONG_DESCRIPTION = open(README_FILE, encoding='UTF8').read()
 
@@ -27,7 +27,7 @@ BASE_REQUIRES = ['numpy', 'pandas', 'xlrd==1.2.0', 'openpyxl', 'seaborn', 'pyyam
 PRIVATE_REQUIRES = ['matfleet>=0.0.5']
 REQUIREMENTS = BASE_REQUIRES + RANDOM_FOREST_REQUIRES + PYTORCH_REQUIRES + PRIVATE_REQUIRES
 
-URL = "https://github.com/AlphaGJW"
+URL = "https://github.com/AlphaGJW;  https://gitee.com/alkemie_gjwang/emml;"
 AUTHOR = __author__
 AUTHOR_EMAIL = __email__
 LICENSE = 'MIT'
