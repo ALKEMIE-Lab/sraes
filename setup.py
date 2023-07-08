@@ -22,7 +22,7 @@ README_FILE = os.path.join(os.path.dirname(__file__), 'README.md')
 LONG_DESCRIPTION = open(README_FILE, encoding='UTF8').read()
 
 RANDOM_FOREST_REQUIRES = ['scikit-learn==1.2.2', 'gplearn==0.4.2']
-PYTORCH_REQUIRES= ['torch', 'torchvision', 'torchaudio']
+PYTORCH_REQUIRES = ['torch', 'torchvision', 'torchaudio']
 BASE_REQUIRES = ['numpy', 'pandas', 'xlrd==1.2.0', 'openpyxl', 'seaborn', 'pyyaml']
 PRIVATE_REQUIRES = ['matfleet>=0.0.5']
 REQUIREMENTS = BASE_REQUIRES + RANDOM_FOREST_REQUIRES + PYTORCH_REQUIRES + PRIVATE_REQUIRES

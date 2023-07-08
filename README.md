@@ -13,7 +13,7 @@ pip install sraes
 
 #### develop
 ```
-git clone 
+git clone git@github.com:ALKEMIE-Lab/sraes.git 
 cd sraes
 pip install -e .
 ```
